@@ -1,0 +1,61 @@
+
+-- 실행 순서 FROM -> WHERE -> SELECT !!!
+-- 실행 순서가 FROM이기 때문에 WHERE절에서 별명 사용 불가능 !! FROM에선 별명가능
+
+-- 테이블의 구조 파악
+DESCRIBE EMPLOYEES;  -- 
+
+-- 1. EMPLOYEES 테이블에서 FIRST_NAME, LAST_NAME 조회하기
+SELECT FIRST_NAME, LAST_NAME   -- EMPLOYEES 계정이 가지고있는 퍼스트,라스트네임  // 오너명시   // 마지막에 별명을 지어주면 그 것으로 사용가능
+  FROM EMPLOYEES;        --HR 계정이 가지고있는 EMPLOYEES // 오너명시   // 마지막 E를 별명으로 지어주면 위쪽에서도 별명으로 사용가능
+  
+-- 2. EMPLOYEES 테이블에서 DEPARTMENT_ID를 중복 제외하고 조회하기
+SELECT DISTINCT DEPARTMENT_ID
+  FROM EMPLOYEES;
+  
+-- 3. EMPLOYEES 테이블에서 EMPLOYEE_ID가 150인 사원 조회하기
+SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME
+  FROM EMPLOYEES
+ WHERE EMPLOYEE_ID = 150;  -- WHERE절(조건)의 등호(=)는 비교 연산자이다. // JAVA로 따지면 == 같다라는 뜻
+ 
+-- 4. EMPLOYEES 테이블에서 SALARY가 10000 ~ 20000 사이인 사원 조회하기
+SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY
+  FROM EMPLOYEES
+ WHERE SALARY BETWEEN 10000 AND 20000;  -- >= 10000 AND SALARY <= 20000 대신 BETWEEN을 넣어서 사용
+ 
+-- 5. EMPLOYEES 테이블에서 DEPARTMENT_ID가 30, 40, 50인 사원 조회하기
+SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, DEPARTMENT_ID
+  FROM EMPLOYEES
+ WHERE DEPARTMENT_ID IN(30, 40, 50);    -- = 30 OR DEPARTMENT_ID = 40 OR DEPARTMENT_ID = 50 대신 IN을 사용하여 줄이기
+ 
+-- 6. EMPLOYEES 테이블에서 DEPARTMENT_ID가 NULL인 사원 조회하기
+SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, DEPARTMENT_ID
+  FROM EMPLOYEES
+ WHERE DEPARTMENT_ID IS NULL;   -- NULL확인할 땐 IS NULL // NULL이 아닌 것을 확인할 땐 IS NOT NULL
+ 
+-- 7. EMPLOYEES 테이블에서 PHONE_NUMBER가 '515'로 시작하는 사원 조회하기
+SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER
+  FROM EMPLOYEES
+ WHERE PHONE_NUMBER LIKE '515%';      -- PHONE_NUMBER NOT LIKE '515%'사용하면 '515%'를 제외하고 찾음 // '515_'를 사용하면 밑줄 하나 당 한글자
+                                      -- 와일드카드 %를 사용할 땐 등호 = 을 사용하지않고( =을 사용하면 515%를 찾는것이다) LIKE를 사용 
+
+-- 8. EMPLOYEES 테이블을 FIRST_NAME의 가나다순(오름차순 : Ascending Sort)으로 정렬해서 조회하기
+SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME
+  FROM EMPLOYEES
+ ORDER BY FIRST_NAME ASC;   -- ASC는 생략 가능하다
+ 
+-- 9. EMPLOYEES 테이블을 높은 SALARY(내림차순 : Descending Sort)를 받는 사원순으로 먼저 조회하기
+SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, SALARY
+  FROM EMPLOYEES
+ ORDER BY SALARY DESC;  -- DESC는 생략 불가능하다 !!!!
+
+-- 10. EMPLOYEES 테이블의 사원들을 DEPARTMENT_ID순으로 조회하고, 동일한 DEPARTMENT_ID를 가진 사원들은 높은 SALARY순으로 조회하기
+SELECT EMPLOYEE_ID, FIRST_NAME, LAST_NAME, DEPARTMENT_ID, SALARY
+  FROM EMPLOYEES
+ ORDER BY DEPARTMENT_ID ASC, SALARY DESC;
+ 
+ 
+ 
+ 
+ 
+ 
