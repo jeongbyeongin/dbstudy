@@ -70,21 +70,62 @@ SELECT DISTINCT MANAGER_ID, JOB_ID
  WHERE JOB_ID LIKE '%MAN';
 
 -- 11. EMPLOYEES 테이블에서 전체 사원을 DEPARTMENT_ID의 오름차순으로 조회하되, 동일한 DEPARTMENT_ID 내에서는 HIRE_DATE의 오름차순으로 조회하시오.
+SELECT DEPARTMENT_ID, HIRE_DATE
+  FROM EMPLOYEES
+ ORDER BY DEPARTMENT_ID, HIRE_DATE ASC;
 
 
+-- 12. EMPLOYEES 테이블에서 DEPARTMENT_ID가 80인 사원들을 높은 SALARY순으로 조회하시오.SALARY는 9,000처럼 천 단위 구분기호를 표기해서 조회하시오.
+SELECT DEPARTMENT_ID
+     , FIRST_NAME || ' ' || LAST_NAME
+     , TO_CHAR(SALARY, '999,999')
+  FROM EMPLOYEES
+ WHERE DEPARTMENT_ID = 80
+ ORDER BY SALARY DESC;
 
--- 12. EMPLOYEES 테이블에서 DEPARTMENT_ID가 80인 사원들을 높은 SALARY순으로 조회하시오. SALARY는 9,000처럼 천 단위 구분기호를 표기해서 조회하시오.
 
 -- 13. EMPLOYEES 테이블에서 전체 사원의 근무 개월 수를 정수로 조회하시오. 1개월 1일을 근무했다면 2개월을 근무한 것으로 처리해서 조회하시오.
+SELECT CEIL(MONTHS_BETWEEN(SYSDATE, TO_DATE(HIRE_DATE, 'YY/MM/DD'))) || '개월'
+    ,  FIRST_NAME || ' ' || LAST_NAME
+  FROM EMPLOYEES;
+
 
 -- 14. EMPLOYEES 테이블에서 PHONE_NUMBER에 따른 지역(REGION)을 조회하시오.
 -- PHONE_NUMBER가 011로 시작하면 'MOBILE', 515로 시작하면 'EAST', 590으로 시작하면 'WEST', 603으로 시작하면 'SOUTH', 650으로 시작하면 'NORTH'로 조회하시오.
+SELECT FIRST_NAME || ' ' || LAST_NAME
+     , PHONE_NUMBER
+     , CASE
+            WHEN PHONE_NUMBER LIKE '011%' THEN 'MOBILE'
+            WHEN PHONE_NUMBER LIKE '515%' THEN 'EAST'
+            WHEN PHONE_NUMBER LIKE '590%' THEN 'WEST'
+            WHEN PHONE_NUMBER LIKE '603%' THEN 'SOUTH'
+            WHEN PHONE_NUMBER LIKE '650%' THEN 'NORTH'
+            END AS REGION
+  FROM EMPLOYEES;
 
 -- 15. EMPLOYEES 테이블에서 근무 개월 수가 240개월 이상이면 '퇴직금정산대상', 아니면 빈 문자열('')을 조회하시오.
+SELECT FIRST_NAME || ' ' || LAST_NAME
+     , HIRE_DATE
+     , MONTHS_BETWEEN(SYSDATE, TO_DATE(HIRE_DATE, 'YY/MM/DD'))
+     , CASE
+            WHEN MONTHS_BETWEEN(SYSDATE, TO_DATE(HIRE_DATE, 'YY/MM/DD')) >= 240 THEN '퇴직금정산대상'
+            ELSE ' '
+            END
+  FROM EMPLOYEES;
+
 
 -- 16. EMPLOYEES 테이블에서 SALARY 평균이 10000 이상인 부서의 DEPARTMENT_ID와 SALARY 평균을 조회하시오. 평균은 정수로 내림처리하시오.
+SELECT DEPARTMENT_ID
+     , FLOOR(AVG(SALARY))     
+  FROM EMPLOYEES
+ GROUP BY
+        DEPARTMENT_ID
+HAVING
+        AVG(SALARY) >= 10000;
 
 -- 17. EMPLOYEES 테이블에서 DEPARTMENT_ID와 JOB_ID가 모두 같은 사원들을 그룹화하여 각 그룹의 사원수를 조회하시오. DEPARTMENT_ID가 NULL인 사원은 제외하시오.
+
+
 
 -- 18. EMPLOYEES 테이블에서 전체 사원들의 부서내 연봉 순위를 조회하시오. 
 
